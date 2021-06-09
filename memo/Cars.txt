@@ -1,0 +1,60 @@
+virtual 소멸자 - 각자 소멸자 실행...
+virtual -> 상속
+override -> 재정의 함수
+
+class parent
+{
+public:
+    virtual void FuncA();
+}
+
+class child
+{
+public:
+    void FuncA() override;
+}
+-------------------------------------
+구식
+typedef ValueType ValueName;
+신식
+using ValueName = ValueType;
+-------------------------------------
+꼭... 맴버 변수는 private으로...
+-------------------------------------
+move parameter
+unique_ptr type은 무브로 넣어줘야함. 
+parameter 앞에 &&를 붙여서 명시함.
+void FuncA(ValueType&& param);
+-------------------------------------
+for (auto it = m_vecComponents.begin(); it != m_vecComponents.end(); ++it)
+{
+    (*it)->Update(Delta);
+}
+이 구문은 it를 한번 포인터로 랩핑을 해줘야함
+
+for (auto& comp : m_vecComponents)
+{
+    comp->Update(Delta);
+}
+이 구분은 안해줘도 됨
+--------------------------------------
+주소로 받을때는 &
+포인터 받는 변수로 선언할때는 *
+--------------------------------------
+이름이 없는 생성자는 move가 실행된다.
+
+car1->AddComponent(ComponentPtr(new ComponentEngine("NewCoreEngine", car1, 10.0f, 10.0f, 10.0f)));
+--------------------------------------
+void AddFunc() = delete;
+이 함수를 사용하지 않겠다 삭제해줌
+
+class A
+{
+public:
+    A(const A& a) = delete;
+    A& operator= (const A& a) = delete;
+}
+해당 생성자를 사용하지 않겠다.
+--------------------------------------
+make_shared<>
+make_unique<>
