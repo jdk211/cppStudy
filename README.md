@@ -18,8 +18,8 @@ A.data B.data가 있을때
 const std::string& 무조건 쓰고보기 습관들이기
 
 c++ lambda
-[my_mod](int v_)->int{return v_ % my_mode;}
-[introducer capture](parameters)->return type{statement}
+[my_mod](int v_)->int{return v_ % my_mode;}();
+[introducer capture](parameters)->return type{statement}();
 []캡쳐 블록 (사용시 외부 변수를 캡쳐해 람다 몸통에서 사용가능)
 ()전달 인자
 ->반환타입 (생략 가능)
@@ -36,6 +36,11 @@ vector.push_back( value ) -> 값의 복사가 일어남
 vector.push_back(std::unique_ptr<T>Value) -> 값의 복사로인해 오류!
 vector.push_back(std::move(std::unique_ptr<T>Value))) -> 이동해야한다.
 vector.erase( iterator::begin + index)
+
+이름이 있는 클래스... A a;
+이름이 없는 클래스... A();
+a = A(); move operator
+A a = A(); move constructor
 
 a = 1 + 2 
 lvalue = rvalue
