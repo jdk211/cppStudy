@@ -56,5 +56,38 @@ public:
 }
 해당 생성자를 사용하지 않겠다.
 --------------------------------------
-make_shared<>
-make_unique<>
+auto a = make_shared<A>() -> 객체 A를 생성하고 그 객체의 포인터를 a가 공유
+a -> |count|A object|
+ A shared_ptr는 다른 개체에 대한 포인터를 저장하는 동안 개체의 소유권을 공유 할 수 있습니다. get()관리 포인터가 아닌 저장된 포인터를 반환합니다.
+
+make_unique<A>
+
+
+--------------------------------------
+make_shared<>에 나오는 다양한 수의 파라미터 넘겨주는 방법
+
+class A : std::enable_shared_from_this<T> 
+
+template<typename T, class... _Types> void CreateCompnent(_Types&&... _Args)
+{
+    m_vecComponents.emplace_back(ComponentPtr(new T(shared_from_this(), _STD forward<_Types>(_Args)...)));
+}
+
+이렇게 하면 다양한 Component를 한 함수로 받을 수 있다.
+
+이전에는 뭐.... 1을 받으면 Engine을 만들고 2를 받으면 OilTank를 만드는 식으로 노가다를함... 나중에 추가되면 또 만들어줌
+위 문법을 사용해서 다양한 class를 함수의 변경없이 받을 수 있다.
+각 class가 받는 parameter가 다양하더라도 문제없이 받을 수 있다.
+
+----------------------------------------
+
+subversion -> server에 무조건 올라감
+git -> local pc에 commit해서 해당 가지고 있다가 나중에 push해서 올린다.
+항상 올리기 전에는 문제가 없는지 컴파일 및 실행 확인하고
+뭔가 추가 될때마다 커밋해야하고 기능 추가된 경우도 추가
+
+atomic한 단위로 커밋한다.
+쪼갤수없는? 예를 들면
+|monster A|monster B|monster C| 중에
+A와 B의 수정사항이 있으면 A를 수정하고 올리고
+B를 수정하고 올리고 단위로 쪼개서 올린다.
