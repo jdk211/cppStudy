@@ -129,3 +129,35 @@ The dereference operator * is also called the indirection operator.
 
 -------------------------------------------
 
+find
+iterator의 시작과 끝을 받아 마지막 파라미터의 값이 들어있는 iterator를 반환한다
+없으면 end()를 반환해서 비교해서 사용
+
+ex) auto it = std::find(Standings.begin(), Standings.end(), i);
+
+
+find_if
+find와 같다 하지만 람다를 사용한다는 점에서 다르다
+
+ex) std::accumulate와는 전달 인자가 다르다... 서로 기능이 다르기때문...
+auto it = std::find_if(m_vecComponents.begin(), m_vecComponents.end(),
+		[](const ComponentPtr& comp)->bool
+		{
+			return comp->GetName() == "NewCoreEngine";
+		}
+	);
+
+-------------------------------------------
+
+using APtr = std::unique_ptr<A>;
+using VECA = std::vector<APtr>;
+VECA vecA;
+
+std::unique_ptr<A>  -> A* (복사할수 없는)
+VECA::iterator      -> APtr의 dereference -> A
+
+APtr a = std::make_unique<A>("A");
+APtr b = a; //대입, 값의 복사이기 때문에 안됨
+APtr& b = a; //APtr의 &를 받는다 주소를 받겠다 a의 주소를 받아감
+APtr c = std::move(a);
+
