@@ -161,3 +161,87 @@ APtr b = a; //대입, 값의 복사이기 때문에 안됨
 APtr& b = a; //APtr의 &를 받는다 주소를 받겠다 a의 주소를 받아감
 APtr c = std::move(a);
 
+
+--------------------------------------------
+
+static_cast 
+보통 static을 사용한다 dynamic은 너무 무겁다
+*를 사용하자 static_cast<ComponentEngine*>(engine.get())->GetConsumeRate();
+
+dynamic_cast 
+parent를 상속받은 class c1, class c2가 있다면 
+c1을 c2 클래스로 casting할 때 사용한다.
+
+--------------------------------------------
+static_cast, dynamic_cast는 너무 무겁기 때문에
+부모 클래스에 각 형에 맞는 GetParameterInt(name), GetParameterFloat(name) ...
+함수들을 만들어서 리턴을 받는다.
+
+--------------------------------------------
+
+#include <thread>
+#include <chrono>
+#include <mutex>
+
+//recursive 재진입이 가능한
+std::recursive_mutex mutex_a;
+int a = 0;
+
+void addA()
+{
+	//mutex_a.lock();
+	//mutex_a.unlock();
+
+	{
+		//lock guard 지역안에서 unlock까지 해줌
+		std::lock_guard<std::recursive_mutex> l(mutex_a);
+		++a;
+	}
+
+	std::chrono::nanoseconds timespan(rand() % 128);
+	std::this_thread::sleep_for(timespan);
+
+	{
+		std::lock_guard<std::recursive_mutex> l(mutex_a);
+		--a;
+	}
+}
+
+int main()
+{
+	const int MaxThread = 4;
+	std::thread threads[MaxThread];
+	for (int t = 0; t < MaxThread; ++t)
+	{
+		threads[t] = std::thread([]()
+			{
+				for (int i = 0; i < 100; ++i)
+				{
+					addA();
+				}
+			}
+		);
+	}
+
+	for (int i = 0; i < MaxThread; ++i)
+	{
+		threads[i].join();
+	}
+
+	std::cout << a << std::endl;
+}
+
+-----------------------------------------
+
+using namespace std::chrono_literals; -> XXms, XXm, XXs 가능
+
+std::lock_guard<std::mutex> l(mutex 변수...);
+std::this_thread::sleep_for(16ms); 
+
+std::chrono::high_resolution_clock::now();
+
+RAII -> 공부하기...
+
+-----------------------------------------
+
+숙제가...  std::chrono::duration_cast<std::chrono::milliseconds>(currentTick - beforeTick).count() / 1000.0f 연산 안하고 chrono에서 해주는 함수
