@@ -245,3 +245,8 @@ RAII -> 공부하기...
 -----------------------------------------
 
 숙제가...  std::chrono::duration_cast<std::chrono::milliseconds>(currentTick - beforeTick).count() / 1000.0f 연산 안하고 chrono에서 해주는 함수
+cout << chrono::duration_cast<chrono::duration<float>>(end - start).count() << endl; 맞음...
+
+// impl 구조 - 공부
+
+
